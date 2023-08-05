@@ -1,15 +1,12 @@
 package infrastructure.repositories;
 
 import domain.models.Customer;
-import domain.models.ProfilePhoto;
 import domain.repositories.CustomerQuery;
 import domain.repositories.CustomerRepository;
 import infrastructure.entities.CustomerProfilePhotos;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
@@ -44,7 +41,7 @@ public class HibernateCustomerRepository implements CustomerRepository {
                                                        entry.getValue()
                                                             .stream()
                                                             .flatMap(customer -> customer
-                                                                            .profilPhotos()
+                                                                            .profilePhotos()
                                                                             .stream()
                                                                     )
                                                             .toList()
