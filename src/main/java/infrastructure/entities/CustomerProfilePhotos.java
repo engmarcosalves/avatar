@@ -22,8 +22,6 @@ public class CustomerProfilePhotos {
     @Column(name = "generated_photo")
     String generatedPhoto;
 
-
-
     @Embeddable
     private static class CompositeKey {
         @Column(name = "customer_id")

@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @ApplicationScoped
-public class HibernateCustomerRepository implements CustomerRepository {
+public class HibernateCustomerPersistenceRepository implements CustomerRepository {
     private final EntityManager entityManager;
 
-    public HibernateCustomerRepository(EntityManager entityManager) {
+    public HibernateCustomerPersistenceRepository(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
@@ -37,25 +37,14 @@ public class HibernateCustomerRepository implements CustomerRepository {
                             .collect(Collectors.groupingBy(Customer::id))
                             .entrySet()
                             .stream()
-                            .map(entry -> new Customer(entry.getKey(),
-                                                       entry.getValue()
-                                                            .stream()
-                                                            .flatMap(customer -> customer
-                                                                            .profilePhotos()
-                                                                            .stream()
-                                                                    )
-                                                            .toList()
-                                                      )
-                            )
-                            .toList();
-
+                            .map(entry -> new Customer(entry.getKey(), entry.getValue().stream().flatMap(customer -> customer.profilePhotos().stream()).toList())
+                                ).toList();
     }
 
     private Predicate[] conditions(CustomerQuery query,
                                    CriteriaBuilder cb,
                                    Root<CustomerProfilePhotos> root) {
         return Stream.of(query.ids().map(id -> cb.in(root.get("compositeKey").get("customerId")).value(id)))
-                .flatMap(Optional::stream)
-                .toArray(Predicate[]::new);
+                .flatMap(Optional::stream).toArray(Predicate[]::new);
     }
 }
