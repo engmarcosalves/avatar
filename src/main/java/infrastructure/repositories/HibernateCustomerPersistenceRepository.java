@@ -3,7 +3,7 @@ package infrastructure.repositories;
 import domain.models.Customer;
 import domain.repositories.CustomerQuery;
 import domain.repositories.CustomerRepository;
-import infrastructure.entities.CustomerProfilePhotos;
+import infrastructure.repositories.entities.CustomerProfilePhotos;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;

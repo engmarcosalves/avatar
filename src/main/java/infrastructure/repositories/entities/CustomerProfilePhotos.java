@@ -1,4 +1,4 @@
-package infrastructure.entities;
+package infrastructure.repositories.entities;
 
 import domain.models.Customer;
 import domain.models.ProfilePhoto;
@@ -8,11 +8,9 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity(name = "profile_photos")
 public class CustomerProfilePhotos {
-
     @EmbeddedId
     CompositeKey compositeKey;
 
@@ -23,16 +21,20 @@ public class CustomerProfilePhotos {
     String generatedPhoto;
 
     @Embeddable
-    private static class CompositeKey {
+    static class CompositeKey {
+
         @Column(name = "customer_id")
         String customerId;
-
         @Column(name = "id")
         String id;
+
     }
+
     public Customer toDomain() {
         return new Customer(compositeKey.customerId,
-                            List.of(new ProfilePhoto(compositeKey.id, originalPhoto, generatedPhoto)));
+                List.of(new ProfilePhoto(compositeKey.id,
+                        originalPhoto,
+                        generatedPhoto)));
     }
 
     public static CustomerProfilePhotos fromDomain(String customerId, ProfilePhoto profilePhoto) {
